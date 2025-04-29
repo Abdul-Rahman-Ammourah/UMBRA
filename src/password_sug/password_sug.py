@@ -1,27 +1,43 @@
 from sensory_suggestion_window import SensorySuggestionWindow
 from password_suggestion import PasswordSuggester
+from PyQt5.QtWidgets import QApplication
+import sys
 
-def generate_passwords_from_gui():
+def main():
+    # Initialize Qt application
+    app = QApplication(sys.argv)
+
+    # Open sensory questions window
     sensory_window = SensorySuggestionWindow()
-    sensory_window.exec_()  # This will auto-collect answers on close due to .accept override
+    sensory_window.exec_()  # User fills and saves answers
 
-    # Extract collected answers
+    # Collect answers
     answers = getattr(sensory_window, 'collected_answers', {})
     if not answers:
-        print("[ERROR] No answers were collected.")
-        return
+        print("[ERROR] No answers collected.")
+        sys.exit()
 
-    suggester = PasswordSuggester(model="deepseek") 
+    # Choose model: DeepSeek or QROK
+    print("\nGenerating passwords using DeepSeek model...\n")
+    deep_suggester = PasswordSuggester(model="deepseek")
+    deep_passwords = deep_suggester.suggest_passwords(answers)
 
-    suggestions = suggester.suggest_passwords(answers)
-
-    # Step 5: Print results
-    print("\nAI-GENERATED PASSWORD SUGGESTIONS:")
-    for i, pw in enumerate(suggestions, 1):
+    print("Results from DeepSeek:")
+    for i, pw in enumerate(deep_passwords, 1):
         print(f"{i}. {pw}")
 
-# Run the generator if this file is executed
+    print("\nGenerating passwords using QROK model...\n")
+    qrok_suggester = PasswordSuggester(model="qrok")
+    qrok_passwords = qrok_suggester.suggest_passwords(answers)
+
+    print("Results from QROK:")
+    for i, pw in enumerate(qrok_passwords, 1):
+        print(f"{i}. {pw}")
+
+    sys.exit()
+
 if __name__ == "__main__":
-    generate_passwords_from_gui()
+    main()
+
 
 
