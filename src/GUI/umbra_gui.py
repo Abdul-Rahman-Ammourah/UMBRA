@@ -20,6 +20,7 @@ class SensorySuggestionWindow(QDialog):
         self.setWindowTitle("SENSORY QUESTIONS INPUT")
         self.setGeometry(150, 150, 600, 600)
         self.setStyleSheet("background-color: #121212; color: #00ff00;")
+        self.collected_answers = {}  # Ensure it's always initialized
         self.init_ui()
 
     def init_ui(self):
@@ -93,6 +94,11 @@ class SensorySuggestionWindow(QDialog):
         self.answers_display.setReadOnly(True)
         layout.addWidget(self.answers_display)
 
+    def accept(self):
+        # Automatically collect answers before the window is accepted/closed
+        self.collect_answers()
+        super().accept()
+
     def collect_answers(self):
         """
         Collects answers from input fields and displays them.
@@ -108,10 +114,11 @@ class SensorySuggestionWindow(QDialog):
             display_value = value if value else "[No Answer Provided]"
             self.answers_display.append(f"{i}. {display_value}")
 
-        # Optionally: Save `answers` dict for later use if needed
+        # Save answers for external access
         self.collected_answers = answers
 
 # >>> End of SensorySuggestionWindow Class <<<
+
 
 class PasswordGenerator:
     @staticmethod
