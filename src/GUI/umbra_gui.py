@@ -9,6 +9,110 @@ from PyQt5.QtGui import QFont, QColor, QTextCursor, QPalette
 import json
 import time
 
+# >>> Add by Mohammad Salah
+# >>> Added by UMBRA Team: SensorySuggestionWindow Class for Input Collection Only <<<
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QFormLayout, QLineEdit, QPushButton, QTextEdit
+from PyQt5.QtCore import Qt
+
+class SensorySuggestionWindow(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("SENSORY QUESTIONS INPUT")
+        self.setGeometry(150, 150, 600, 600)
+        self.setStyleSheet("background-color: #121212; color: #00ff00;")
+        self.init_ui()
+
+    def init_ui(self):
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+
+        title = QLabel("SENSORY QUESTIONS COLLECTION")
+        title.setStyleSheet("font-family: 'Courier New'; font-size: 16px; font-weight: bold;")
+        title.setAlignment(Qt.AlignCenter)
+        layout.addWidget(title)
+
+        self.form_layout = QFormLayout()
+        self.form_layout.setLabelAlignment(Qt.AlignRight)
+
+        # Define questions
+        self.questions = [
+            "What is your favorite color?",
+            "What is your favorite car?",
+            "What type of music or song do you love the most?",
+            "What is your favorite book or movie?",
+            "What is your favorite food or dish?",
+            "What sport do you enjoy playing or watching?",
+            "What is your favorite travel destination or place to visit?",
+            "What is your favorite animal?",
+            "What was your favorite subject in school?",
+            "What do you usually do to relax or focus?"
+        ]
+
+        # Prepare input fields
+        self.input_fields = []
+        for question in self.questions:
+            input_field = QLineEdit()
+            input_field.setStyleSheet("""
+                background-color: #0a0a0a;
+                color: #00ff00;
+                border: 1px solid #005500;
+                padding: 5px;
+            """)
+            self.form_layout.addRow(question, input_field)
+            self.input_fields.append(input_field)
+
+        layout.addLayout(self.form_layout)
+
+        # Button to collect answers
+        self.collect_btn = QPushButton("SAVE ANSWERS")
+        self.collect_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #003300;
+                color: #00ff00;
+                border: 1px solid #00aa00;
+                padding: 10px;
+                font-family: 'Courier New';
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #005500;
+            }
+        """)
+        self.collect_btn.clicked.connect(self.collect_answers)
+        layout.addWidget(self.collect_btn)
+
+        # Display collected answers
+        self.answers_display = QTextEdit()
+        self.answers_display.setStyleSheet("""
+            background-color: #0a0a0a;
+            color: #00ff00;
+            font-family: 'Courier New';
+            border: 1px solid #005500;
+            padding: 5px;
+        """)
+        self.answers_display.setReadOnly(True)
+        layout.addWidget(self.answers_display)
+
+    def collect_answers(self):
+        """
+        Collects answers from input fields and displays them.
+        """
+        answers = {}
+        for idx, input_field in enumerate(self.input_fields, start=1):
+            answer = input_field.text().strip()
+            answers[f'question_{idx}'] = answer
+
+        self.answers_display.clear()
+        self.answers_display.append("COLLECTED ANSWERS:\n")
+        for i, (key, value) in enumerate(answers.items(), 1):
+            display_value = value if value else "[No Answer Provided]"
+            self.answers_display.append(f"{i}. {display_value}")
+
+        # Optionally: Save `answers` dict for later use if needed
+        self.collected_answers = answers
+
+# >>> End of SensorySuggestionWindow Class <<<
+
 class PasswordGenerator:
     @staticmethod
     def generate_targeted_password(user_info, num_passwords=10):
