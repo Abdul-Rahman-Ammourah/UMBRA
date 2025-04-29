@@ -121,7 +121,7 @@ class SensorySuggestionWindow(QDialog):
         suggester = PasswordSuggester(model="deepseek")
         passwords = suggester.suggest_passwords(self.collected_answers)
 
-        self.answers_display.append("AI-GENERATED PASSWORDS:\n")
+        self.answers_display.append("AI-SUGGESTIONS PASSWORDS:\n")
         for i, pw in enumerate(passwords, 1):
             self.answers_display.append(f"{i}. {pw}")
 # >>> End of SensorySuggestionWindow Class <<<
