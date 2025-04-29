@@ -1,43 +1,69 @@
-from sensory_suggestion_window import SensorySuggestionWindow
-from password_suggestion import PasswordSuggester
-from PyQt5.QtWidgets import QApplication
-import sys
+from openai import OpenAI
+from dotenv import load_dotenv
+import os
 
-def main():
-    # Initialize Qt application
-    app = QApplication(sys.argv)
+load_dotenv()
 
-    # Open sensory questions window
-    sensory_window = SensorySuggestionWindow()
-    sensory_window.exec_()  # User fills and saves answers
+# Load API Keys
+DEEPSEEK_API = os.getenv("DEEP-SEEK-API")
+QROK_API = os.getenv("QROK_API")
 
-    # Collect answers
-    answers = getattr(sensory_window, 'collected_answers', {})
-    if not answers:
-        print("[ERROR] No answers collected.")
-        sys.exit()
+# Create API clients
+deep_client = OpenAI(api_key=DEEPSEEK_API, base_url="https://api.deepseek.com")
+qrok_client = OpenAI(api_key=QROK_API, base_url="https://api.openai.com/v1")
 
-    # Choose model: DeepSeek or QROK
-    print("\nGenerating passwords using DeepSeek model...\n")
-    deep_suggester = PasswordSuggester(model="deepseek")
-    deep_passwords = deep_suggester.suggest_passwords(answers)
+class PasswordSuggester:
+    def __init__(self, model="deepseek"):
+        if model == "deepseek":
+            self.client = deep_client
+            self.model = "deepseek-chat"
+        elif model == "qrok":
+            self.client = qrok_client
+            self.model = "qrok-1"
+        else:
+            raise ValueError("Model must be 'deepseek' or 'qrok'")
 
-    print("Results from DeepSeek:")
-    for i, pw in enumerate(deep_passwords, 1):
-        print(f"{i}. {pw}")
+    def suggest_passwords(self, answers: dict, num_passwords=5) -> list:
+        prompt = self._build_prompt(answers, num_passwords)
 
-    print("\nGenerating passwords using QROK model...\n")
-    qrok_suggester = PasswordSuggester(model="qrok")
-    qrok_passwords = qrok_suggester.suggest_passwords(answers)
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": "You are a password security expert."},
+                    {"role": "user", "content": prompt}
+                ],
+                stream=False
+            )
 
-    print("Results from QROK:")
-    for i, pw in enumerate(qrok_passwords, 1):
-        print(f"{i}. {pw}")
+            raw_output = response.choices[0].message.content.strip()
+            return self._parse_passwords(raw_output)
 
-    sys.exit()
+        except Exception as e:
+            return [f"[ERROR] Failed to generate passwords: {str(e)}"]
 
-if __name__ == "__main__":
-    main()
+    def _build_prompt(self, answers: dict, num_passwords: int) -> str:
+        prompt_lines = [
+            f"Generate {num_passwords} strong password suggestions based on the following personal inputs:"
+        ]
 
+        for i in range(1, 11):
+            answer = answers.get(f"question_{i}", "").strip()
+            if answer:
+                prompt_lines.append(f"Q{i}: {answer}")
 
+        prompt_lines.append("""
+Passwords must follow these rules:
+- Minimum length: 12 characters
+- Must include: uppercase letters, lowercase letters, numbers, and special characters
+- Should be memorable yet secure
+- DO NOT explain, just list the passwords only, each on a new line
+        """)
+
+        return "\n".join(prompt_lines)
+
+    def _parse_passwords(self, raw_output: str) -> list:
+        lines = raw_output.splitlines()
+        passwords = [line.strip("0123456789. ").strip() for line in lines if line.strip() and len(line.strip()) >= 12]
+        return passwords[:5]
 
