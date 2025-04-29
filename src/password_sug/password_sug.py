@@ -52,6 +52,7 @@ class PasswordSuggester:
             if answer:
                 prompt_lines.append(f"Q{i}: {answer}")
 
+# It is a critical part of the instructions (prompt) that guides the model to generate strong and correct passwords according to security standards
         prompt_lines.append("""
 Passwords must follow these rules:
 - Minimum length: 12 characters
