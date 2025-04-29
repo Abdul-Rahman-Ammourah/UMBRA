@@ -13,7 +13,7 @@ import time
 # >>> Added by UMBRA Team: SensorySuggestionWindow Class for Input Collection Only <<<
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QFormLayout, QLineEdit, QPushButton, QTextEdit
 from PyQt5.QtCore import Qt
-from password_suggestion import PasswordSuggester  # Make sure this path is correct
+from password_suggestion import PasswordSuggester  # Ensure path is correct
 
 class SensorySuggestionWindow(QDialog):
     def __init__(self, parent=None):
@@ -80,7 +80,6 @@ class SensorySuggestionWindow(QDialog):
         self.collect_btn.clicked.connect(self.collect_answers)
         layout.addWidget(self.collect_btn)
 
-        # >>> Added: Generate Passwords Button <<<
         self.generate_btn = QPushButton("GENERATE PASSWORDS")
         self.generate_btn.setStyleSheet(self.collect_btn.styleSheet())
         self.generate_btn.clicked.connect(self.generate_passwords)
@@ -96,10 +95,6 @@ class SensorySuggestionWindow(QDialog):
         """)
         self.answers_display.setReadOnly(True)
         layout.addWidget(self.answers_display)
-
-    def accept(self):
-        self.collect_answers()
-        super().accept()
 
     def collect_answers(self):
         answers = {}
@@ -126,12 +121,10 @@ class SensorySuggestionWindow(QDialog):
         suggester = PasswordSuggester(model="deepseek")
         passwords = suggester.suggest_passwords(self.collected_answers)
 
-        self.answers_display.append("AI-Suggestion Passwords:\n")
+        self.answers_display.append("AI-GENERATED PASSWORDS:\n")
         for i, pw in enumerate(passwords, 1):
             self.answers_display.append(f"{i}. {pw}")
-
 # >>> End of SensorySuggestionWindow Class <<<
-
 
 class PasswordGenerator:
     @staticmethod
