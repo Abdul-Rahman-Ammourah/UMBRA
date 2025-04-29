@@ -13,14 +13,15 @@ import time
 # >>> Added by UMBRA Team: SensorySuggestionWindow Class for Input Collection Only <<<
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QFormLayout, QLineEdit, QPushButton, QTextEdit
 from PyQt5.QtCore import Qt
+from password_suggestion import PasswordSuggester  # Make sure this path is correct
 
 class SensorySuggestionWindow(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("SENSORY QUESTIONS INPUT")
-        self.setGeometry(150, 150, 600, 600)
+        self.setGeometry(150, 150, 600, 700)
         self.setStyleSheet("background-color: #121212; color: #00ff00;")
-        self.collected_answers = {}  # Ensure it's always initialized
+        self.collected_answers = {}
         self.init_ui()
 
     def init_ui(self):
@@ -35,7 +36,6 @@ class SensorySuggestionWindow(QDialog):
         self.form_layout = QFormLayout()
         self.form_layout.setLabelAlignment(Qt.AlignRight)
 
-        # Define questions
         self.questions = [
             "What is your favorite color?",
             "What is your favorite car?",
@@ -49,7 +49,6 @@ class SensorySuggestionWindow(QDialog):
             "What do you usually do to relax or focus?"
         ]
 
-        # Prepare input fields
         self.input_fields = []
         for question in self.questions:
             input_field = QLineEdit()
@@ -64,7 +63,6 @@ class SensorySuggestionWindow(QDialog):
 
         layout.addLayout(self.form_layout)
 
-        # Button to collect answers
         self.collect_btn = QPushButton("SAVE ANSWERS")
         self.collect_btn.setStyleSheet("""
             QPushButton {
@@ -82,7 +80,12 @@ class SensorySuggestionWindow(QDialog):
         self.collect_btn.clicked.connect(self.collect_answers)
         layout.addWidget(self.collect_btn)
 
-        # Display collected answers
+        # >>> Added: Generate Passwords Button <<<
+        self.generate_btn = QPushButton("GENERATE PASSWORDS")
+        self.generate_btn.setStyleSheet(self.collect_btn.styleSheet())
+        self.generate_btn.clicked.connect(self.generate_passwords)
+        layout.addWidget(self.generate_btn)
+
         self.answers_display = QTextEdit()
         self.answers_display.setStyleSheet("""
             background-color: #0a0a0a;
@@ -95,14 +98,10 @@ class SensorySuggestionWindow(QDialog):
         layout.addWidget(self.answers_display)
 
     def accept(self):
-        # Automatically collect answers before the window is accepted/closed
         self.collect_answers()
         super().accept()
 
     def collect_answers(self):
-        """
-        Collects answers from input fields and displays them.
-        """
         answers = {}
         for idx, input_field in enumerate(self.input_fields, start=1):
             answer = input_field.text().strip()
@@ -114,8 +113,22 @@ class SensorySuggestionWindow(QDialog):
             display_value = value if value else "[No Answer Provided]"
             self.answers_display.append(f"{i}. {display_value}")
 
-        # Save answers for external access
         self.collected_answers = answers
+
+    def generate_passwords(self):
+        self.collect_answers()
+        if not self.collected_answers:
+            self.answers_display.append("\n[ERROR] No answers collected.")
+            return
+
+        self.answers_display.append("\n[INFO] Generating passwords using DeepSeek...\n")
+
+        suggester = PasswordSuggester(model="deepseek")
+        passwords = suggester.suggest_passwords(self.collected_answers)
+
+        self.answers_display.append("AI-Suggestion Passwords:\n")
+        for i, pw in enumerate(passwords, 1):
+            self.answers_display.append(f"{i}. {pw}")
 
 # >>> End of SensorySuggestionWindow Class <<<
 
