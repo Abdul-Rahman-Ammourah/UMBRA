@@ -1,6 +1,7 @@
 from playwright.sync_api import sync_playwright
 import re
 
+
 def extract_emails(text):
     """Extract emails from given text using regex"""
     pattern = r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+'
