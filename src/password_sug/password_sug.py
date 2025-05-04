@@ -1,28 +1,5 @@
-from openai import OpenAI
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-
-# Load API Keys
-DEEPSEEK_API = os.getenv("DEEP-SEEK-API")
-QROK_API = os.getenv("QROK_API")
-
-# Create API clients
-deep_client = OpenAI(api_key=DEEPSEEK_API, base_url="https://api.deepseek.com")
-qrok_client = OpenAI(api_key=QROK_API, base_url="https://api.openai.com/v1")
-
 class PasswordSuggester:
-    def __init__(self, model="deepseek"):
-        if model == "deepseek":
-            self.client = deep_client
-            self.model = "deepseek-chat"
-        elif model == "qrok":
-            self.client = qrok_client
-            self.model = "qrok-1"
-        else:
-            raise ValueError("Model must be 'deepseek' or 'qrok'")
-
+    
     def suggest_passwords(self, answers: dict, num_passwords=5) -> list:
         prompt = self._build_prompt(answers, num_passwords)
 

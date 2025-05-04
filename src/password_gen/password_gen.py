@@ -1,73 +1,73 @@
-from openai import OpenAI  # type: ignore
-from dotenv import load_dotenv  # type: ignore
 import os
-import csv
+import requests
+from typing import List
 
-# Load environment variables from .env file
-load_dotenv()
-
-# Get DeepSeek API key
-deep_seek_api_key = os.getenv('DEEP-SEEK-API')
-
-# Initialize DeepSeek client
-try:
-    client = OpenAI(
-        api_key=deep_seek_api_key,
-        base_url="https://api.deepseek.com"
-    )
-except Exception as e:
-    print(f"Error initializing DeepSeek client: {e}")
-    client = None
-
-def password_generator(user_input, total_length=12, num_uppercase=2, num_digits=2, num_special=2):
+def password_generator(Uname: str = "Ahmed", Byeat: str = "1999", Fav: str = "Camping", City: str = "Japan", Hobby: str = "Jazz", Chunksize: int = 100) -> List[str]:
     """
-    Generate passwords based on user input and password policies using DeepSeek AI.
+    Sends user data to a local GPT-2 model backend API to generate passwords.
+    
     Args:
-        user_input (list): List of strings from OSINT or user data.
-        total_length (int): Desired total password length.
-        num_uppercase (int): Number of uppercase letters required.
-        num_digits (int): Number of digits required.
-        num_special (int): Number of special characters required.
-
+        Uname (str): Target Username.
+        Byeat (str): Target Birthday.
+        Fav (str): Target Favorite item/thing.
+        City (str): Target City.
+        Hobby (str): Target Hobby.
+        Chunksize (int): Number of iterations (multiplied by 5 outputs per batch).
+    
     Returns:
-        list: List of generated passwords.
+        List[str]: A list of unique generated passwords.
     """
-    if client is None:
-        print("DeepSeek client is not initialized.")
-        return []
-
-    # Check if user input exists
-    if not user_input:
-        print("No input data provided.")
-        return []
-
-    passwords = []
-
-    for entry in user_input:
-        # Create prompt based on user entry and password policy
-        prompt = (
-            f"You are a password generator AI. Based on the keyword '{entry}', generate a strong password. "
-            f"Requirements: total length {total_length}, at least {num_uppercase} uppercase letters, {num_digits} digits, and {num_special} special characters. "
-            f"Return ONLY the password without any explanation."
+    try:
+        response = requests.post(
+            "http://192.168.1.197:8000/generate-passwords",  # Replace with your backend IP:PORT
+            json={
+                "Uname": Uname,
+                "Byeat": Byeat,
+                "Fav": Fav,
+                "City": City,
+                "Hobby": Hobby,
+                "Chunksize": Chunksize
+            }
         )
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"[ERROR] Failed to contact password generation API: {e}")
+        return []
 
-        try:
-            # Send request to DeepSeek AI
-            response = client.chat.completions.create(
-                model="deepseek-chat",
-                messages=[
-                    {"role": "system", "content": "You are an expert password generator."},
-                    {"role": "user", "content": prompt}
-                ],
-                stream=False
-            )
+def generate_password_list():
+    print("[SYSTEM] Generating password list...")
 
-            # Extract generated password
-            generated_password = response.choices[0].message.content.strip()
-            passwords.append(generated_password)
+    uname = input("Enter target's name: ")
+    byear = input("Enter birth year: ")
+    fav = input("Enter favorite item: ")
+    city = input("Enter city: ")
+    hobby = input("Enter hobby: ")
+    chunksize_input = input("Enter generation chunk size (default 100): ")
 
-        except Exception as e:
-            print(f"Error generating password for '{entry}': {e}")
-            passwords.append("Error")
+    try:
+        chunksize = int(chunksize_input)
+    except ValueError:
+        chunksize = 100
 
-    return passwords
+    passwords = password_generator(uname, byear, fav, city, hobby, chunksize)
+
+    if not passwords:
+        print("[ERROR] No passwords generated.")
+        return
+
+    # Save to file
+    directory = "src\\ai\\GeneratedPasswords"
+    os.makedirs(directory, exist_ok=True)
+    counter = 1
+    while True:
+        filename = os.path.join(directory, f"passwords{counter}.txt")
+        if not os.path.exists(filename):
+            break
+        counter += 1
+
+    with open(filename, "w", encoding="utf-8") as f:
+        for pw in passwords:
+            f.write(pw + "\n")
+
+    print(f"[SYSTEM] Generated {len(passwords)} passwords and saved to {filename}.")

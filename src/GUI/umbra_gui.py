@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QVBoxLayout, QWidget,
                             QPushButton, QLabel, QTextEdit, QHBoxLayout, QFrame,
                             QLineEdit, QDialog, QFormLayout, QMessageBox)
 from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QFont, QColor, QTextCursor, QPalette
+from PyQt5.QtGui import QFont, QColor, QTextCursor, QPalette, QIcon
 import json
 import time
 
@@ -56,6 +56,8 @@ class HackerTerminal(QTextEdit):
             border: 1px solid #00aa00;
             padding: 5px;
         """)
+        self.setWindowIcon(QIcon(r'Assets\UMBRA.ico'))
+
         self.setReadOnly(True)
         self.setLineWrapMode(QTextEdit.NoWrap)
         
@@ -70,12 +72,13 @@ class GenerationWindow(QDialog):
         self.setWindowTitle("TARGETED PASSWORD GENERATION")
         self.setGeometry(150, 150, 500, 400)
         self.setStyleSheet("background-color: #121212; color: #00ff00;")
+        self.setWindowIcon(QIcon(r'Assets\UMBRA.ico'))
         self.init_ui()
     
     def init_ui(self):
         layout = QVBoxLayout()
         self.setLayout(layout)
-        
+        self.setWindowIcon(QIcon(r'Assets\UMBRA.ico'))
         # Title
         title = QLabel("TARGET INFORMATION COLLECTION")
         title.setStyleSheet("font-family: 'Courier New'; font-size: 16px; font-weight: bold;")
@@ -162,6 +165,7 @@ class SuggestionWindow(QDialog):
         super().__init__(parent)
         self.setWindowTitle("PERSONAL PASSWORD SUGGESTION")
         self.setGeometry(150, 150, 500, 400)
+        self.setWindowIcon(QIcon(r'Assets\UMBRA.ico'))
         self.setStyleSheet("background-color: #121212; color: #00ff00;")
         self.init_ui()
     
@@ -250,8 +254,10 @@ class SuggestionWindow(QDialog):
 class UMRBAMainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("UMBRA // PASSWORD SECURITY SUITE")
+        self.setWindowTitle("UMBRA")
         self.setGeometry(100, 100, 800, 600)
+        self.setWindowIcon(QIcon(r'Assets\UMBRA.ico'))
+        
         self.setStyleSheet("background-color: #121212;")
         self.init_ui()
         
@@ -416,6 +422,8 @@ def launch_gui():
     dark_palette.setColor(QPalette.HighlightedText, Qt.black)
     app.setPalette(dark_palette)
     
+    app_icon = QIcon(r'Assets\UMBRA.ico')  # Use absolute path if needed
+    app.setWindowIcon(app_icon)  # <-- This affects the taskbar icon
     window = UMRBAMainWindow()
     window.show()
     sys.exit(app.exec_())
