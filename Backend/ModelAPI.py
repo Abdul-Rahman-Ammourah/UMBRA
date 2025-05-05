@@ -36,7 +36,7 @@ def generate_passwords():
             top_k=50,
             top_p=0.96,
             temperature=0.65,
-            num_return_sequences=5,
+            num_return_sequences=3,
             pad_token_id=tokenizer.eos_token_id
         )
 

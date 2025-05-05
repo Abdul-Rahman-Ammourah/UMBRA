@@ -2,7 +2,7 @@ import os
 import requests
 from typing import List
 
-def password_generator(Uname: str = "Ahmed", Byeat: str = "1999", Fav: str = "Camping", City: str = "Japan", Hobby: str = "Jazz", Chunksize: int = 100) -> List[str]:
+def password_generator(Uname: str = "Ahmed", Byeat: str = "1999", Fav: str = "Camping", City: str = "Japan", Hobby: str = "Jazz", Chunksize : int = 100) -> List[str]:
     """
     Sends user data to a local GPT-2 model backend API to generate passwords.
     
@@ -40,10 +40,10 @@ def generate_password_list():
 
     uname = input("Enter target's name: ")
     byear = input("Enter birth year: ")
-    fav = input("Enter favorite item: ")
+    fav = input("Enter favorite thing: ")
     city = input("Enter city: ")
     hobby = input("Enter hobby: ")
-    chunksize_input = input("Enter generation chunk size (default 100): ")
+    chunksize_input = input("Enter the number of passwords to generate (default 500): ")
 
     try:
         chunksize = int(chunksize_input)
