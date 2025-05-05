@@ -31,11 +31,11 @@ def interactive_mode():
     while True:
         command = input("\n[UMBRA] >> ").strip().lower()
         
-        if command == "generate":
+        if command == "generate" or command == "gen" or command == "g":
             generate_password()
         elif command == "gui":
             launch_gui()
-        elif command == "suggest":
+        elif command == "suggest" or command == "s" or command == "sug":
             suggest_password()
         elif command == "exit":
             print("[SYSTEM] Exiting UMBRA. Stay safe!")
