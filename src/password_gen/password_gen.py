@@ -2,7 +2,7 @@ import os
 import requests
 from typing import List
 
-def password_generator(Uname: str = "Ahmed", Byeat: str = "1999", Fav: str = "Camping", City: str = "Japan", Hobby: str = "Jazz", Chunksize : int = 100) -> List[str]:
+def password_generator(Uname: str = "Ahmed", Byear: str = "1999", Fav: str = "Camping", City: str = "Japan", Hobby: str = "Jazz", Chunksize : int = 100) -> List[str]:
     """
     Sends user data to a local GPT-2 model backend API to generate passwords.
     
@@ -22,7 +22,7 @@ def password_generator(Uname: str = "Ahmed", Byeat: str = "1999", Fav: str = "Ca
             "http://192.168.1.197:8000/generate-passwords",  # Replace with your backend IP:PORT
             json={
                 "Uname": Uname,
-                "Byeat": Byeat,
+                "Byeat": Byear,
                 "Fav": Fav,
                 "City": City,
                 "Hobby": Hobby,

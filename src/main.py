@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication
-from GUI.umbra_gui import UMRBAMainWindow
+#from GUI.umbra_gui import UMRBAMainWindow
+from GUI.ui.main_window import UMRBAMainWindow
 from password_gen.password_gen import generate_password_list
 def print_logo():
     logo = r"""
