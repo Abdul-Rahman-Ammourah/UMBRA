@@ -21,6 +21,11 @@ chmod +x umbra.sh
 ./umbra.sh
 ```
 
+```
+git clone https://github.com/Abdul-Rahman-Ammourah/UMBRA.git
+cd UMBRA/src
+python main.py
+```
 ## 📌 Use Cases
 - 🛡️ Penetration Testing – Generate smarter password lists for ethical hacking and security assessments.
 - 📢 Cybersecurity Awareness – Demonstrate how easily weak passwords can be guessed.
