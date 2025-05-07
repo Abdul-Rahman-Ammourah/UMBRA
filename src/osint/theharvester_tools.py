@@ -30,12 +30,10 @@ class Harvester:
 
     def fetch_page(self, url):
         try:
-            # Choose a random User-Agent for each request
             headers = {
                 "User-Agent": random.choice(self.user_agents)
             }
 
-            # Apply proxy if enabled
             if self.use_proxy:
                 response = requests.get(url, headers=headers, proxies=self.proxies, timeout=10)
             else:
@@ -84,31 +82,22 @@ class Harvester:
 
         links = self.extract_links(soup, url)
         for link in links:
-            time.sleep(1)  # polite delay to avoid being blocked
+            time.sleep(1)  # polite delay
             self.crawl(link, depth - 1)
 
     def run(self):
         print("[*] Starting harvesting...")
         self.crawl(self.base_url, self.max_depth)
 
-        if self.emails:
-            print(f"\n📬 Total unique emails found: {len(self.emails)}")
-            for email in self.emails:
-                print(" -", email)
-            with open("emails.txt", "w") as f:
-                for email in self.emails:
-                    f.write(email + "\n")
-            print("[+] Saved to emails.txt")
-        else:
-            print("[-] No emails found.")
-
-if __name__ == "__main__":
-    target_url = input("Enter the target URL (e.g. https://example.com): ").strip()
-    depth = input("Enter crawl depth (default 2): ").strip()
-    depth = int(depth) if depth.isdigit() else 2
-
-    use_proxy_input = input("Use proxy? (y/n): ").strip().lower()
-    use_proxy = use_proxy_input == 'y'
-
-    harvester = Harvester(base_url=target_url, max_depth=depth, use_proxy=use_proxy)
+# ✅ دالة جاهزة للـ GUI
+def run(url="https://www.uiowa.edu/about/contact-us", depth=2, use_proxy=False):
+    harvester = Harvester(base_url=url, max_depth=depth, use_proxy=use_proxy)
     harvester.run()
+    if harvester.emails:
+        return f"[+] Found {len(harvester.emails)} emails:\n" + "\n".join(harvester.emails)
+    else:
+        return "[-] No emails found."
+
+# ✅ اختبار يدوي
+if __name__ == "__main__":
+    print(run())
