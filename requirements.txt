@@ -5,7 +5,7 @@ theharvester>=4.0.0     # OSINT data gathering
 spyse-python            # OSINT data gathering ALT ??
 
 # AI Integration
-requests>=2.31.0        # For making API calls to DeepSeek-Coder
+flask-cors>=5.0.1       # For handling CORS in Flask applications
 
 # Password Generation and Evaluation
 zxcvbn>=4.4.28          # Password strength evaluation

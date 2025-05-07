@@ -1,9 +1,8 @@
 import sys
 from PyQt5.QtWidgets import QApplication
-from password_gen.password_gen import password_generator
-from password_sug.password_sug import password_suggestor
-from GUI.umbra_gui import UMRBAMainWindow
-
+#from GUI.umbra_gui import UMRBAMainWindow
+from GUI.ui.main_window import UMRBAMainWindow
+from password_gen.password_gen import generate_password_list
 def print_logo():
     logo = r"""
 ██    ██ ███    ███ ██████  ██████   █████  
@@ -16,13 +15,12 @@ def print_logo():
     """
     print(logo)
 
-def generate_password_list():
-    print("[SYSTEM] Generating password list...")
-    password_generator()
+def generate_password():
+    generate_password_list()
     
 def suggest_password():
     print("[SYSTEM] Suggesting a secure password...")
-    password_suggestor()
+    #password_suggestor()
 def launch_gui():
     print("[SYSTEM] Launching GUI...")
     app = QApplication(sys.argv)
@@ -34,11 +32,11 @@ def interactive_mode():
     while True:
         command = input("\n[UMBRA] >> ").strip().lower()
         
-        if command == "generate":
-            generate_password_list()
+        if command == "generate" or command == "gen" or command == "g":
+            generate_password()
         elif command == "gui":
             launch_gui()
-        elif command == "suggest":
+        elif command == "suggest" or command == "s" or command == "sug":
             suggest_password()
         elif command == "exit":
             print("[SYSTEM] Exiting UMBRA. Stay safe!")

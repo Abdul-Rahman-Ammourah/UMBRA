@@ -5,9 +5,9 @@ import random
 import string
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QVBoxLayout, QWidget, 
                             QPushButton, QLabel, QTextEdit, QHBoxLayout, QFrame,
-                            QLineEdit, QDialog, QFormLayout, QMessageBox)
+                            QLineEdit, QDialog, QFormLayout, QMessageBox,QGridLayout )
 from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QFont, QColor, QTextCursor, QPalette
+from PyQt5.QtGui import QFont, QColor, QTextCursor, QPalette, QIcon
 import json
 import time
 
@@ -56,6 +56,8 @@ class HackerTerminal(QTextEdit):
             border: 1px solid #00aa00;
             padding: 5px;
         """)
+        self.setWindowIcon(QIcon(r'Assets\UMBRA.ico'))
+
         self.setReadOnly(True)
         self.setLineWrapMode(QTextEdit.NoWrap)
         
@@ -68,14 +70,15 @@ class GenerationWindow(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("TARGETED PASSWORD GENERATION")
-        self.setGeometry(150, 150, 500, 400)
+        self.setGeometry(600, 300, 700, 500)
         self.setStyleSheet("background-color: #121212; color: #00ff00;")
+        self.setWindowIcon(QIcon(r'Assets\UMBRA.ico'))
         self.init_ui()
     
     def init_ui(self):
         layout = QVBoxLayout()
         self.setLayout(layout)
-        
+        self.setWindowIcon(QIcon(r'Assets\UMBRA.ico'))
         # Title
         title = QLabel("TARGET INFORMATION COLLECTION")
         title.setStyleSheet("font-family: 'Courier New'; font-size: 16px; font-weight: bold;")
@@ -87,26 +90,43 @@ class GenerationWindow(QDialog):
         form.setLabelAlignment(Qt.AlignRight)
         
         self.username_input = QLineEdit()
-        self.email_input = QLineEdit()
         self.birthdate_input = QLineEdit()
         self.hobbies_input = QLineEdit()
-        
-        for widget in [self.username_input, self.email_input, 
-                      self.birthdate_input, self.hobbies_input]:
+        self.fav_input = QLineEdit()
+        self.city_input = QLineEdit()
+        self.chucksize_input = QLineEdit()
+        for widget in [self.username_input, self.birthdate_input, 
+                      self.chucksize_input, self.hobbies_input,
+                      self.fav_input, self.city_input]:
             widget.setStyleSheet("""
                 background-color: #0a0a0a;
                 color: #00ff00;
                 border: 1px solid #005500;
                 padding: 5px;
             """)
+        grid_layout = QGridLayout()
         
-        form.addRow("Target Username:", self.username_input)
-        form.addRow("Target Email:", self.email_input)
-        form.addRow("Target Birthdate:", self.birthdate_input)
-        form.addRow("Target Hobbies:", self.hobbies_input)
+        # First column
+        grid_layout.addWidget(QLabel("Name:"), 0, 0)
+        grid_layout.addWidget(self.username_input, 0, 1)
         
-        layout.addLayout(form)
+        grid_layout.addWidget(QLabel("Birthdate:"), 1, 0)
+        grid_layout.addWidget(self.birthdate_input, 1, 1)
         
+        grid_layout.addWidget(QLabel("Hobbies:"), 2, 0)
+        grid_layout.addWidget(self.hobbies_input, 2, 1)
+        
+        # Second column
+        grid_layout.addWidget(QLabel("Favorite:"), 0, 2)
+        grid_layout.addWidget(self.fav_input, 0, 3)
+        
+        grid_layout.addWidget(QLabel("City:"), 1, 2)
+        grid_layout.addWidget(self.city_input, 1, 3)
+        
+        grid_layout.addWidget(QLabel("Chunksize:"), 2, 2)
+        grid_layout.addWidget(self.chucksize_input, 2, 3)
+        
+        layout.addLayout(grid_layout)
         # Generate button
         self.generate_btn = QPushButton("GENERATE TARGETED PASSWORDS")
         self.generate_btn.setStyleSheet("""
@@ -133,18 +153,17 @@ class GenerationWindow(QDialog):
     
     def generate_passwords(self):
         user_info = {
-            'username': self.username_input.text(),
-            'email': self.email_input.text(),
-            'birthdate': self.birthdate_input.text(),
-            'hobbies': self.hobbies_input.text()
+            'Uname': self.username_input.text(),
+            'Byear': self.birthdate_input.text(),
+            'Fav': self.fav_input.text(),
+            'City': self.city_input.text(),
+            'Hobby': self.hobbies_input.text(),
+            'Chunksize': self.chucksize_input.text()
         }
-        
-        self.status_label.setText("GENERATING PASSWORDS...")
+        self.status_label.setText(user_info.items())
         QApplication.processEvents()  # Update UI
         
-        # Simulate AI processing time
-        time.sleep(2)
-        
+                
         passwords = PasswordGenerator.generate_targeted_password(user_info)
         
         # Save to file
@@ -161,7 +180,8 @@ class SuggestionWindow(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("PERSONAL PASSWORD SUGGESTION")
-        self.setGeometry(150, 150, 500, 400)
+        self.setGeometry(600, 300, 500, 400)
+        self.setWindowIcon(QIcon(r'Assets\UMBRA.ico'))
         self.setStyleSheet("background-color: #121212; color: #00ff00;")
         self.init_ui()
     
@@ -250,8 +270,10 @@ class SuggestionWindow(QDialog):
 class UMRBAMainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("UMBRA // PASSWORD SECURITY SUITE")
-        self.setGeometry(100, 100, 800, 600)
+        self.setWindowTitle("UMBRA")
+        self.setGeometry(500, 250, 800, 600)
+        self.setWindowIcon(QIcon(r'Assets\UMBRA.ico'))
+        
         self.setStyleSheet("background-color: #121212;")
         self.init_ui()
         
@@ -416,6 +438,8 @@ def launch_gui():
     dark_palette.setColor(QPalette.HighlightedText, Qt.black)
     app.setPalette(dark_palette)
     
+    app_icon = QIcon(r'Assets\UMBRA.ico')  # Use absolute path if needed
+    app.setWindowIcon(app_icon)  # <-- This affects the taskbar icon
     window = UMRBAMainWindow()
     window.show()
     sys.exit(app.exec_())

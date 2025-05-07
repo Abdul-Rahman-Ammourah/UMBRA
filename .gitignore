@@ -1,3 +1,5 @@
 .env
 __pycache__/
 venv
+/Backend/GPT2
+src/ai/GPT2_Model.py
