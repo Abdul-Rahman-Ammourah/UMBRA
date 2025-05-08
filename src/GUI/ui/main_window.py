@@ -131,7 +131,7 @@ class UMRBAMainWindow(QMainWindow):
             "ESTABLISHING SECURE CONNECTION...",
             "VERIFYING SYSTEM INTEGRITY...",
             "ALL SYSTEMS OPERATIONAL",
-            "READY FOR USER INPUT"
+            "UMBRA IS NOW ONLINE"
         ]
         
         self.terminal.append("> SYSTEM BOOT SEQUENCE INITIATED")

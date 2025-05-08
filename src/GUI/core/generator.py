@@ -2,7 +2,7 @@ import requests
 
 class PasswordGenerator:
     @staticmethod
-    def generate_targeted_password(user_info, num_passwords=10):
+    def generate_targeted_password(user_info):
         """Generate targeted passwords based on user information"""
         
         Uname = user_info.get('Uname', ''),
