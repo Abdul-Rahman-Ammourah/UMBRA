@@ -17,3 +17,6 @@ zxcvbn>=4.4.28          # Password strength evaluation
 python-dotenv>=1.0.0    # For managing environment variables
 ## argparse is built-in, so no need to include it in requirements.txt
 pytest>=7.4.0           # For writing and running tests
+
+# Osint tools
+python -m utils.Compiner # For run playwright_tools.py
