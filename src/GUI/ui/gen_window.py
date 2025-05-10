@@ -10,7 +10,8 @@ import os
 class GenerationWindow(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("TARGETED PASSWORD GENERATION")
+        self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        self.setWindowTitle("UMBRA")
         self.setGeometry(600, 300, 700, 600)
         self.setStyleSheet("""
             background-color: #121212;

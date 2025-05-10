@@ -1,5 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication
+from PyQt5.QtCore import Qt
 #from GUI.umbra_gui import UMRBAMainWindow
 from GUI.ui.main_window import UMRBAMainWindow
 from password_gen.password_gen import generate_password_list
@@ -26,7 +27,14 @@ def launch_gui():
     print("[SYSTEM] Launching GUI...")
     app = QApplication(sys.argv)
     window = UMRBAMainWindow()
+
+    window.setWindowFlags(window.windowFlags() | Qt.WindowStaysOnTopHint)
     window.show()
+    window.raise_()
+    window.activateWindow()
+
+    window.show()
+
     sys.exit(app.exec_())
 def interactive_mode():
     print("[SYSTEM] UMBRA Interactive Mode Activated.")

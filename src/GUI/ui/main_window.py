@@ -4,8 +4,7 @@ from PyQt5.QtWidgets import (QMainWindow, QVBoxLayout, QWidget, QPushButton,
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QIcon, QTextCursor
 from .gen_window import GenerationWindow
-from .sug_window import SuggestionWindow
-from .sensory_window import SensorySuggestionWindow
+from .sug_window import PasswordSuggestionWindow
 from .widgets import HackerTerminal
 
 class UMRBAMainWindow(QMainWindow):
@@ -157,6 +156,6 @@ class UMRBAMainWindow(QMainWindow):
     
     def open_suggestion_window(self):
         self.terminal.append("\n> OPENING PERSONAL SUGGESTION MODULE...")
-        self.suggestion_window = SuggestionWindow(self)
+        self.suggestion_window = PasswordSuggestionWindow(self)
         self.suggestion_window.exec_()
         self.terminal.append("> RETURNED TO MAIN INTERFACE")
