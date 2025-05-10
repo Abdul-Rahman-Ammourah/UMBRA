@@ -180,6 +180,12 @@ class GenerationWindow(QDialog):
 
     def finish_generation(self, user_info):
         passwords = PasswordGenerator.generate_targeted_password(user_info)
+    
+        if not passwords:  # Skip everything if no passwords were generated
+            self.typewriter_effect("\nNo passwords generated.\nAn error may have occurred.\n")
+            self.status_label.setText("NO PASSWORDS GENERATED")
+            return
+    
         directory = "src\\ai\\GeneratedPasswords"
         os.makedirs(directory, exist_ok=True)
         counter = 1
@@ -192,10 +198,10 @@ class GenerationWindow(QDialog):
         with open(filename, "w", encoding="utf-8") as f:
             for pw in passwords:
                 f.write(pw + "\n")
-
+    
         self.typewriter_effect("\nGeneration complete!\n")
-        self.typewriter_effect(f"Created {len(passwords)} password variants\n")
+        self.typewriter_effect(f"Created {user_info['Chunksize']} password variants\n")
         self.typewriter_effect(f"Results saved to: {filename}\n\n\n")
-
+    
         self.status_label.setText(f"SAVED TO {filename}")
-
+    
