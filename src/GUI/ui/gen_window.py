@@ -51,38 +51,32 @@ class GenerationWindow(QDialog):
         grid.addWidget(QLabel("Name:"), 0, 0)
         self.username_input = QLineEdit()
         self.username_input.setPlaceholderText("e.g., johnsmith")
-        self.username_input.textChanged.connect(lambda txt: self.update_terminal("Name", txt))
         grid.addWidget(self.username_input, 0, 1)
 
         grid.addWidget(QLabel("Birthdate:"), 1, 0)
         self.birthdate_input = QLineEdit()
         self.birthdate_input.setPlaceholderText("e.g., 1990")
-        self.birthdate_input.textChanged.connect(lambda txt: self.update_terminal("Birthdate", txt))
         grid.addWidget(self.birthdate_input, 1, 1)
 
         grid.addWidget(QLabel("Hobbies:"), 2, 0)
         self.hobbies_input = QLineEdit()
         self.hobbies_input.setPlaceholderText("e.g., gaming, reading")
-        self.hobbies_input.textChanged.connect(lambda txt: self.update_terminal("Hobbies", txt))
         grid.addWidget(self.hobbies_input, 2, 1)
 
         # Second column
         grid.addWidget(QLabel("Favorite:"), 0, 2)
         self.fav_input = QLineEdit()
         self.fav_input.setPlaceholderText("e.g., pizza, BMW, Messi")
-        self.fav_input.textChanged.connect(lambda txt: self.update_terminal("Favorite", txt))
         grid.addWidget(self.fav_input, 0, 3)
 
         grid.addWidget(QLabel("City:"), 1, 2)
         self.city_input = QLineEdit()
         self.city_input.setPlaceholderText("e.g., New York, Jordan, Syria")
-        self.city_input.textChanged.connect(lambda txt: self.update_terminal("City", txt))
         grid.addWidget(self.city_input, 1, 3)
 
         grid.addWidget(QLabel("Chunksize:"), 2, 2)
         self.chunksize_input = QLineEdit()
         self.chunksize_input.setPlaceholderText("Optional, default: 100")
-        self.chunksize_input.textChanged.connect(lambda txt: self.update_terminal("Chunk Size", txt))
         grid.addWidget(self.chunksize_input, 2, 3)
 
         # Style inputs
@@ -146,22 +140,6 @@ class GenerationWindow(QDialog):
         else:
             self.type_timer.stop()
 
-    def update_terminal(self, field, value):
-        if not value:
-            return
-        lines = self.terminal.toPlainText().splitlines()
-        for i, line in enumerate(lines):
-            if line.startswith(f"{field}:"):
-                lines[i] = f"{field}: {value}"
-                break
-        else:
-            lines.append(f"{field}: {value}")
-        # keep last 15
-        if len(lines) > 15:
-            lines = lines[-15:]
-        self.terminal.setPlainText("\n".join(lines))
-        self.terminal.moveCursor(QTextCursor.End)
-
     def generate_passwords(self):
         self.typewriter_effect("\n\nInitializing password generation sequence...\n")
         self.typewriter_effect("Compiling target data...\n")
@@ -220,3 +198,4 @@ class GenerationWindow(QDialog):
         self.typewriter_effect(f"Results saved to: {filename}\n\n\n")
 
         self.status_label.setText(f"SAVED TO {filename}")
+

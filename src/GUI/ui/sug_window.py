@@ -21,11 +21,6 @@ class PasswordSuggestionWindow(QDialog):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        title = QLabel("ENTER PERSONAL & SENSORY INFO")
-        title.setStyleSheet("font-family: 'Courier New'; font-size: 18px; font-weight: bold;")
-        title.setAlignment(Qt.AlignLeft)
-        layout.addWidget(title)
-
         self.form_layout = QFormLayout()
         self.form_layout.setLabelAlignment(Qt.AlignLeft)
 
@@ -146,9 +141,10 @@ class PasswordSuggestionWindow(QDialog):
 
         self.output.append("\n[INFO] These passwords include upper/lowercase, numbers, and symbols.")
 
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = PasswordSuggestionWindow()
-    window.show()
-    sys.exit(app.exec_())
+## Testing the GUI
+# Uncomment the following lines to run the GUI directly
+# if __name__ == "__main__":
+#     app = QApplication(sys.argv)
+#     window = PasswordSuggestionWindow()
+#     window.show()
+#     sys.exit(app.exec_())
