@@ -26,7 +26,7 @@ def generate_passwords():
     input_text = f"{data['Uname']}|{data['Byeat']}|{data['Fav']}|{data['City']}|{data['Hobby']}|"
     inputs = tokenizer(input_text, return_tensors="pt").to(device)
     chunksize = data.get("Chunksize", 100)
-
+    
     results: Set[str] = set()
     for _ in range(chunksize):
         outputs = model.generate(

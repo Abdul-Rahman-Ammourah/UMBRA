@@ -165,19 +165,27 @@ class GenerationWindow(QDialog):
         self.typewriter_effect("\n\nInitializing password generation sequence...\n")
         self.typewriter_effect("Compiling target data...\n")
 
+        try:
+            chunksize_val = int(self.chunksize_input.text())
+            if chunksize_val <= 0:
+                raise ValueError
+        except ValueError:
+            chunksize_val = 100  # Default value
+    
         user_info = {
             'Uname': self.username_input.text(),
             'Byear': self.birthdate_input.text(),
             'Fav': self.fav_input.text(),
             'City': self.city_input.text(),
             'Hobby': self.hobbies_input.text(),
-            'Chunksize': self.chunksize_input.text()
-        }
-
+            'Chunksize': chunksize_val
+    }   
+    
         self.typewriter_effect("\nTARGET PROFILE:\n")
         for k, v in user_info.items():
-            if v:
-                self.typewriter_effect(f"- {k}: {v}\n")
+            display_value = v if v else "None"
+            self.typewriter_effect(f"- {k}: {display_value}\n")
+
 
         self.typewriter_effect("\nGenerating targeted password variants...\n")
         QApplication.processEvents()

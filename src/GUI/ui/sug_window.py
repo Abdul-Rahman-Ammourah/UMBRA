@@ -2,7 +2,6 @@ from PyQt5.QtWidgets import (QDialog, QVBoxLayout, QLabel, QFormLayout,
                             QLineEdit, QPushButton, QTextEdit)
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from GUI.core.generator import PasswordGenerator
 
 class SuggestionWindow(QDialog):
     def __init__(self, parent=None):
@@ -85,7 +84,7 @@ class SuggestionWindow(QDialog):
             'hobbies': self.favorites_input.text()
         }
         
-        passwords = PasswordGenerator.generate_targeted_password(user_info, num_passwords=5)
+        
         
         self.password_display.clear()
         self.password_display.append("SUGGESTED PASSWORDS:\n")
