@@ -10,7 +10,7 @@ CORS(app)
 # Load model and tokenizer once on startup
 model_path = r"Backend\GPT2"
 model = GPT2LMHeadModel.from_pretrained(model_path, local_files_only=True)
-tokenizer = AutoTokenizer.from_pretrained("gpt2", local_files_only=True)
+tokenizer = AutoTokenizer.from_pretrained("gpt2", local_files_only=False)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
