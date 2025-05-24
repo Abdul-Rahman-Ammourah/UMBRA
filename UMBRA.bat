@@ -32,6 +32,7 @@ if exist "%REQUIREMENTS_FILE%" (
     pip install -r %REQUIREMENTS_FILE%
 ) else (
     echo Error: %REQUIREMENTS_FILE% not found.
+    echo Please ensure the requirements file is present in the current directory.
     exit /b 1
 )
 
@@ -41,6 +42,7 @@ if exist "%MAIN_PY%" (
     python %MAIN_PY%
 ) else (
     echo Error: %MAIN_PY% not found.
+    echo Please ensure the main.py file is present in the src directory.
     exit /b 1
 )
 

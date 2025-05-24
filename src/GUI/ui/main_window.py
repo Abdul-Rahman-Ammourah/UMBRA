@@ -12,7 +12,7 @@ class UMRBAMainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("UMBRA")
         self.setGeometry(500, 250, 800, 600)
-        self.setWindowIcon(QIcon(r'Assets\UMBRA.ico'))
+        self.setWindowIcon(QIcon(r'Assets\UMBRA.png'))
         self.setStyleSheet("background-color: #121212;")
         self.init_ui()
     

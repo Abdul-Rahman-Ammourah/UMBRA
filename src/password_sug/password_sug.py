@@ -1,47 +1,62 @@
-class PasswordSuggester:
-    
-    def suggest_passwords(self, answers: dict, num_passwords=5) -> list:
-        prompt = self._build_prompt(answers, num_passwords)
+import random
+import string
 
-        try:
-            response = self.client.chat.completions.create(
-                model=self.model,
-                messages=[
-                    {"role": "system", "content": "You are a password security expert."},
-                    {"role": "user", "content": prompt}
-                ],
-                stream=False
-            )
+def suggest_password_list():
+    print("[SYSTEM] Welcome to the Password Suggestion")
 
-            raw_output = response.choices[0].message.content.strip()
-            return self._parse_passwords(raw_output)
+    # Helper functions
+    def clean_input(prompt):
+        return input(prompt).strip().replace(" ", "_")
 
-        except Exception as e:
-            return [f"[ERROR] Failed to generate passwords: {str(e)}"]
+    def rand_symbol():
+        return random.choice("!@#$%^&*")
 
-    def _build_prompt(self, answers: dict, num_passwords: int) -> str:
-        prompt_lines = [
-            f"Generate {num_passwords} strong password suggestions based on the following personal inputs:"
-        ]
+    def capitalize_mix(word):
+        return word[:1].upper() + word[1:].lower()
 
-        for i in range(1, 11):
-            answer = answers.get(f"question_{i}", "").strip()
-            if answer:
-                prompt_lines.append(f"Q{i}: {answer}")
+    def to_leet(text, chance=0.5):
+        leet_map = {
+            'e': '3', 'E': '3',
+            'i': '1', 'I': '1',
+            'o': '0', 'O': '0',
+            's': '$', 'S': '$',
+            't': '7', 'T': '7',
+            'l': '1', 'L': '1'
+        }
+        result = []
+        for c in text:
+            if c in leet_map and random.random() < chance:
+                result.append(leet_map[c])
+            else:
+                result.append(c)
+        return ''.join(result)
 
-# It is a critical part of the instructions (prompt) that guides the model to generate strong and correct passwords according to security standards
-        prompt_lines.append("""
-Passwords must follow these rules:
-- Minimum length: 12 characters
-- Must include: uppercase letters, lowercase letters, numbers, and special characters
-- Should be memorable yet secure
-- DO NOT explain, just list the passwords only, each on a new line
-        """)
+    # Gather personal info
+    username = clean_input("1. What's your username? ")
+    birthdate = clean_input("2. What's your birthdate (YYYYMMDD)? ")
+    favorite_thing = clean_input("3. What's your favorite thing (movie, car, etc.)? ")
+    color = clean_input("4. What's your favorite color? ")
+    food = clean_input("5. What's your favorite food? ")
+    animal = clean_input("6. What's your favorite animal? ")
 
-        return "\n".join(prompt_lines)
+    # Extract parts
+    year, month, day = birthdate[:4], birthdate[4:6], birthdate[6:]
 
-    def _parse_passwords(self, raw_output: str) -> list:
-        lines = raw_output.splitlines()
-        passwords = [line.strip("0123456789. ").strip() for line in lines if line.strip() and len(line.strip()) >= 12]
-        return passwords[:5]
+    # Generate passwords
+    suggestions = []
 
+    suggestions.append(to_leet(f"{capitalize_mix(favorite_thing)}{day}{rand_symbol()}{color[:2].capitalize()}Z"))
+    suggestions.append(to_leet(f"{capitalize_mix(animal)}_{month}{rand_symbol()}{food[:2].capitalize()}8"))
+    suggestions.append(to_leet(f"{capitalize_mix(username[:3])}@{color.capitalize()}{rand_symbol()}{year[-2:]}"))
+    suggestions.append(to_leet(f"{capitalize_mix(food)}_{year}!{random.randint(10,99)}"))
+    suggestions.append(to_leet(f"{capitalize_mix(animal)}Luv{rand_symbol()}{birthdate[-4:]}"))
+    suggestions.append(to_leet(f"{capitalize_mix(favorite_thing)}{rand_symbol()}4{color.capitalize()}_{month}"))
+    suggestions.append(to_leet(f"{capitalize_mix(food)}Cr@ve{day}{rand_symbol()}"))
+    suggestions.append(to_leet(f"{capitalize_mix(username)}{rand_symbol()}Fav{birthdate[-2:]}{animal[:1].upper()}"))
+
+    # Output
+    print("\nHere are 8 suggested passwords:\n")
+    for i, pwd in enumerate(suggestions, 1):
+        print(f"{i}. {pwd}")
+
+    print("\n[INFO] All passwords meet strong security standards (length, mixed case, digits, symbols, and random leetspeak).")

@@ -12,14 +12,14 @@ class GenerationWindow(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)
-        self.setWindowTitle("UMBRA")
+        self.setWindowTitle("UMBRA - Password Generation")
         self.setGeometry(600, 300, 700, 600)
         self.setStyleSheet("""
             background-color: #121212;
             color: #00ff00;
             font-family: 'Courier New';
         """)
-        self.setWindowIcon(QIcon(r'Assets\UMBRA.ico'))
+        self.setWindowIcon(QIcon(r'Assets\UMBRA.png'))
         self.init_ui()
 
     def init_ui(self):

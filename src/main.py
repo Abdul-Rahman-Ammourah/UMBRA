@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt
 #from GUI.umbra_gui import UMRBAMainWindow
 from GUI.ui.main_window import UMRBAMainWindow
 from password_gen.password_gen import generate_password_list
-from password_sug.password_sug import PasswordSuggester
+from password_sug.password_sug import suggest_password_list
 def print_logo():
     logo = r"""
 ██    ██ ███    ███ ██████  ██████   █████  
@@ -21,8 +21,7 @@ def generate_password():
     generate_password_list()
     
 def suggest_password():
-    print("[SYSTEM] Suggesting a secure password...")
-    PasswordSuggester()
+    suggest_password_list()
 def launch_gui():
     print("[SYSTEM] Launching GUI...")
     app = QApplication(sys.argv)
