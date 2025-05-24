@@ -3,7 +3,7 @@ import torch # type: ignore
 from transformers import AutoTokenizer, GPT2LMHeadModel
 from typing import Set
 from flask_cors import CORS # type: ignore
-
+import time
 app = Flask(__name__)
 CORS(app)
 
@@ -19,14 +19,15 @@ model.to(device)
 def generate_passwords():
     data = request.json
 
-    required_fields = ["Uname", "Byeat", "Fav", "City", "Hobby"]
+    required_fields = ["Uname", "Byear", "Fav", "City", "Hobby"]
     if not all(field in data for field in required_fields):
         return jsonify({"error": "Missing required fields."}), 400
 
-    input_text = f"{data['Uname']}|{data['Byeat']}|{data['Fav']}|{data['City']}|{data['Hobby']}|"
+    input_text = f"{data['Uname']}|{data['Byear']}|{data['Fav']}|{data['City']}|{data['Hobby']}|"
     inputs = tokenizer(input_text, return_tensors="pt").to(device)
     chunksize = data.get("Chunksize", 100)
     
+    start_time  = time.time()
     results: Set[str] = set()
     for _ in range(chunksize):
         outputs = model.generate(
@@ -47,8 +48,11 @@ def generate_passwords():
                 pw = parts[1].strip()
                 if 4 <= len(pw) <= 16:
                     results.add(pw)
-
-    return jsonify(sorted(results))
+                    
+    end_time = time.time()
+    time_taken = round(end_time - start_time, 2)
+    return jsonify({"results": sorted(results),
+                    "time_taken_seconds": time_taken})
 
 if __name__ == "__main__":
     app.run(host="192.168.1.197", port=8000)

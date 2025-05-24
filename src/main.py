@@ -37,21 +37,20 @@ def launch_gui():
 
     sys.exit(app.exec_())
 def interactive_mode():
-    print("[SYSTEM] UMBRA Interactive Mode Activated.")
     while True:
         command = input("\n[UMBRA] >> ").strip().lower()
         
         if command == "generate" or command == "gen" or command == "g":
             generate_password()
-        elif command == "gui":
+        elif command == "gui" or command == "menu" or command == "m":
             launch_gui()
         elif command == "suggest" or command == "s" or command == "sug":
             suggest_password()
-        elif command == "exit":
+        elif command == "exit" or command == "quit" or command == "q" or command == "e" or command == "x":
             print("[SYSTEM] Exiting UMBRA. Stay safe!")
             break
         else:
-            print("[ERROR] Unknown command. Type 'generate', 'suggest', or 'exit'.")
+            print("[ERROR] Unknown command. Type 'gui', 'generate', 'suggest', or 'exit'.")
 
 if __name__ == "__main__":
     print_logo()

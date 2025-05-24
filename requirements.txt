@@ -9,5 +9,6 @@ flask-cors>=5.0.1       # For handling CORS in Flask applications
 PyQt5>=5.15.11        # For creating GUI applications
 
 # Utilities
-python-dotenv>=1.0.0    # For managing environment variables
+python-dotenv>=1.0.0    # For managing environment variables TO BE REMOVED
+requests>=2.32.3        # For making HTTP requests
 

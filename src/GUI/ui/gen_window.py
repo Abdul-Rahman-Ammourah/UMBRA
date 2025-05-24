@@ -7,6 +7,7 @@ from PyQt5.QtGui import QIcon, QTextCursor
 import time
 from GUI.core.generator import PasswordGenerator
 import os
+import logging
 class GenerationWindow(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -158,7 +159,7 @@ class GenerationWindow(QDialog):
             'City': self.city_input.text(),
             'Hobby': self.hobbies_input.text(),
             'Chunksize': chunksize_val
-    }   
+        }   
     
         self.typewriter_effect("\nTARGET PROFILE:\n")
         for k, v in user_info.items():
@@ -179,13 +180,21 @@ class GenerationWindow(QDialog):
             QMessageBox.critical(self, "Error", f"Failed to generate passwords:\n{str(e)}")
 
     def finish_generation(self, user_info):
-        passwords = PasswordGenerator.generate_targeted_password(user_info)
-    
+        passwords, time_taken = PasswordGenerator.generate_targeted_password(user_info)
+        chunksize = user_info['Chunksize']
+        self.typewriter_effect(f"Chunk Size set to: {chunksize}\n")
         if not passwords:  # Skip everything if no passwords were generated
             self.typewriter_effect("\nNo passwords generated.\nAn error may have occurred.\n")
             self.status_label.setText("NO PASSWORDS GENERATED")
             return
-    
+        if len(passwords) != user_info['Chunksize']:
+            # load filler.txt and fill the rest with it till it matches chunksize
+            with open("src\\ai\\GeneratedPasswords\\filler.txt", "r", encoding="utf-8") as f:
+                filler_passwords = f.read().splitlines()
+            while len(passwords) < chunksize:
+                passwords.extend(filler_passwords[:chunksize - len(passwords)])
+            passwords = passwords[:chunksize]  # Trim to exactly chunksize
+
         directory = "src\\ai\\GeneratedPasswords"
         os.makedirs(directory, exist_ok=True)
         counter = 1
@@ -199,7 +208,7 @@ class GenerationWindow(QDialog):
             for pw in passwords:
                 f.write(pw + "\n")
     
-        self.typewriter_effect("\nGeneration complete!\n")
+        self.typewriter_effect(f"\nGeneration complete! Time taken: {time_taken} seconds \n")
         self.typewriter_effect(f"Created {user_info['Chunksize']} password variants\n")
         self.typewriter_effect(f"Results saved to: {filename}\n\n\n")
     
