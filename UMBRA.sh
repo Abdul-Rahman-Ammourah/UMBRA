@@ -6,7 +6,7 @@ set -e
 # Variables
 VENV_DIR="venv"
 REQUIREMENTS_FILE="requirements.txt"
-MAIN_PY="src\main.py"
+MAIN_PY="src/main.py"
 
 # Check if Python 3 is installed
 if ! command -v python3 &> /dev/null; then
@@ -15,34 +15,19 @@ if ! command -v python3 &> /dev/null; then
     exit 1
 fi
 
-# Create a virtual environment
+# Create virtual environment
 echo "Creating virtual environment..."
-python3 -m venv $VENV_DIR
+python3 -m venv "$VENV_DIR"
 
-# Activate the virtual environment
+# Activate virtual environment
 echo "Activating virtual environment..."
-source $VENV_DIR/bin/activate
+source "$VENV_DIR/bin/activate"
 
-# Upgrade pip
-echo "Upgrading pip..."
+# Upgrade pip and install dependencies
+echo "Upgrading pip and installing dependencies..."
 pip install --upgrade pip
+pip install -r "$REQUIREMENTS_FILE"
 
-# Install dependencies
-if [ -f "$REQUIREMENTS_FILE" ]; then
-    echo "Installing dependencies from $REQUIREMENTS_FILE..."
-    pip install -r $REQUIREMENTS_FILE
-else
-    echo "Error: $REQUIREMENTS_FILE not found."cls
-    exit 1
-fi
-
-# Run setup.py (if it exists)
-if [ -f "$SMAIN_PY" ]; then
-    echo "Running main.py..."
-    python $MAIN_PY
-else
-    echo "No main.py found. Skipping."
-fi
-
-echo "Setup complete! Virtual environment is ready to use."
-echo "To activate the virtual environment, run: source $VENV_DIR/bin/activate"
+# Run main.py
+echo "Running main.py..."
+python "$MAIN_PY"
