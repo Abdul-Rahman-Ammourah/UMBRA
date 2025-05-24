@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QIcon, QTextCursor
 import time
-from GUI.core.generator import PasswordGenerator
+from GUI.core.generator import password_generator
 import os
 import logging
 class GenerationWindow(QDialog):
@@ -167,7 +167,6 @@ class GenerationWindow(QDialog):
             self.typewriter_effect(f"- {k}: {display_value}\n")
 
 
-        self.typewriter_effect("\nGenerating targeted password variants...\n")
         QApplication.processEvents()
 
         # Call the generation
@@ -180,9 +179,8 @@ class GenerationWindow(QDialog):
             QMessageBox.critical(self, "Error", f"Failed to generate passwords:\n{str(e)}")
 
     def finish_generation(self, user_info):
-        passwords, time_taken = PasswordGenerator.generate_targeted_password(user_info)
+        passwords, time_taken = password_generator(user_info)
         chunksize = user_info['Chunksize']
-        self.typewriter_effect(f"Chunk Size set to: {chunksize}\n")
         if not passwords:  # Skip everything if no passwords were generated
             self.typewriter_effect("\nNo passwords generated.\nAn error may have occurred.\n")
             self.status_label.setText("NO PASSWORDS GENERATED")
