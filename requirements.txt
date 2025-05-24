@@ -1,22 +1,13 @@
 # OSINT Tools
 scrapy>=2.11.0          # Web scraping framework
 playwright>=1.40.0      # Browser automation
-theharvester>=4.0.0     # OSINT data gathering
-spyse-python            # OSINT data gathering ALT ??
 
 # AI Integration
 flask-cors>=5.0.1       # For handling CORS in Flask applications
 
-# Password Generation and Evaluation
-zxcvbn>=4.4.28          # Password strength evaluation
-
 # GUI Frameworks
-## tkinter is built-in, so no need to include it in requirements.txt
+PyQt5>=5.15.11        # For creating GUI applications
 
 # Utilities
 python-dotenv>=1.0.0    # For managing environment variables
-## argparse is built-in, so no need to include it in requirements.txt
-pytest>=7.4.0           # For writing and running tests
 
-# Osint tools
-python -m utils.Compiner # For run playwright_tools.py
