@@ -24,12 +24,6 @@ class SpiderFootLite:
             "Mozilla/5.0 (Linux; Android 11; SM-G991B) AppleWebKit/537.36 Chrome/110.0 Mobile Safari/537.36"
         ]
 
-        # Proxy settings (editable if user chooses to enable it)
-        self.proxies = {
-            "http": "http://your-proxy-ip:port",
-            "https": "http://your-proxy-ip:port"
-        }
-
     # Extract domain from full URL or raw domain input
     def extract_domain(self, url):
         parsed = urlparse(url)

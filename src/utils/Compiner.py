@@ -1,18 +1,13 @@
-#Take all the Osint data and combine them into one list
 
-#def compiner(osint_data):
-    #Implement the code here
-  #  pass
 
 import sys, os
 from pathlib import Path
 
-# نضيف مجلد 'src/osint' إلى sys.path لكي تُعامَل 'playwright/' داخله كحزمة علوية
 project_root = Path(__file__).resolve().parent.parent  # .../UMBRA/src
 sys.path.insert(0, str(project_root / "osint"))
 
 import re
-from playwright.sync_api import sync_playwright   # الآن سيجد الحزمة تحت osint/playwright
+from playwright.sync_api import sync_playwright  
 
 def run_playwright_scraper(target_url):
     with sync_playwright() as p:
