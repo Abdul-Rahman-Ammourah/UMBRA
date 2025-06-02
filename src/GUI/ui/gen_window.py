@@ -180,19 +180,10 @@ class GenerationWindow(QDialog):
 
     def finish_generation(self, user_info):
         passwords, time_taken = password_generator(user_info)
-        chunksize = user_info['Chunksize']
         if not passwords:  # Skip everything if no passwords were generated
             self.typewriter_effect("\nNo passwords generated.\nAn error may have occurred.\n")
             self.status_label.setText("NO PASSWORDS GENERATED")
             return
-        if len(passwords) != user_info['Chunksize']:
-            # load filler.txt and fill the rest with it till it matches chunksize
-            with open("src\\ai\\GeneratedPasswords\\filler.txt", "r", encoding="utf-8") as f:
-                filler_passwords = f.read().splitlines()
-            while len(passwords) < chunksize:
-                passwords.extend(filler_passwords[:chunksize - len(passwords)])
-            passwords = passwords[:chunksize]  # Trim to exactly chunksize
-
         directory = "src\\ai\\GeneratedPasswords"
         os.makedirs(directory, exist_ok=True)
         counter = 1

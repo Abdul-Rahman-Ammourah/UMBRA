@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt
 from GUI.ui.main_window import UMRBAMainWindow
 from password_gen.password_gen import generate_password_list
 from password_sug.password_sug import suggest_password_list
+from Cracker.Decrypter import cracker
 def print_logo():
     logo = r"""
 ██    ██ ███    ███ ██████  ██████   █████  
@@ -47,6 +48,8 @@ def interactive_mode():
             suggest_password()
         elif command == "exit" or command == "quit" or command == "q" or command == "e" or command == "x":
             print("[SYSTEM] Exiting UMBRA. Stay safe!")
+        elif command == "cracker" or command == "crack" or command == "c":
+            cracker()
             break
         else:
             print("[ERROR] Unknown command. Type 'gui', 'generate', 'suggest', or 'exit'.")
@@ -61,6 +64,7 @@ if __name__ == "__main__":
           "Type 'gui' to launch the GUI.\n"
           "Type 'generate' to create a password list.\n"
           "Type 'suggest' to get a secure password.\n"
+          "Type 'cracker' to crack an encrypted file.\n"
           "Type 'exit' to quit the program.\n")
 
     interactive_mode()
