@@ -1,3 +1,12 @@
+"""Password Suggestion Dialog Window.
+
+Provides personalized password suggestions based on user-provided information
+with security transformations including:
+- Leetspeak substitutions
+- Random symbol insertion
+- Capitalization mixing
+- Personal data combinations
+"""
 from PyQt5.QtWidgets import (QApplication, QDialog, QVBoxLayout, QLabel, QFormLayout,
                              QLineEdit, QPushButton, QTextEdit)
 from PyQt5.QtCore import Qt
@@ -6,7 +15,13 @@ import sys
 import random
 
 class PasswordSuggestionWindow(QDialog):
+    """Interactive password suggestion dialog.
+
+    Args:
+        parent (QWidget, optional): Parent widget. Defaults to None.
+    """
     def __init__(self, parent=None):
+        """Initialize window with cyberpunk styling."""
         super().__init__(parent)
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)
         self.setWindowTitle("UMBRA - Password Suggestion")
@@ -20,6 +35,7 @@ class PasswordSuggestionWindow(QDialog):
         self.init_ui()
 
     def init_ui(self):
+        """Setup form inputs, generate button, and output display."""
         layout = QVBoxLayout()
         self.setLayout(layout)
 
@@ -112,17 +128,47 @@ class PasswordSuggestionWindow(QDialog):
         layout.addWidget(self.output)
 
     def clean_input(self, text):
+        """Sanitize user input by stripping whitespace and replacing spaces.
+        
+        Args:
+            text (str): Raw input text
+            
+        Returns:
+            str: Cleaned text
+        """
         return text.strip().replace(" ", "_")
 
     def rand_symbol(self):
+        """Get random special character from security-approved set.
+        
+        Returns:
+            str: Random symbol
+        """
         return random.choice("!@#$%^&*")
 
     def capitalize_mix(self, word):
+        """Capitalize first letter and lowercase remainder.
+        
+        Args:
+            word (str): Input word
+            
+        Returns:
+            str: Proper case word
+        """
         if not word:
             return ""
         return word[:1].upper() + word[1:].lower()
 
     def to_leet(self, text, chance=0.5):
+        """Convert characters to leetspeak with probability.
+        
+        Args:
+            text (str): Input text
+            chance (float): Substitution probability (0-1)
+            
+        Returns:
+            str: Leet-transformed text
+        """
         leet_map = {
             'e': '3', 'E': '3',
             'i': '1', 'I': '1',
@@ -140,6 +186,7 @@ class PasswordSuggestionWindow(QDialog):
         return ''.join(result)
 
     def generate_passwords(self):
+        """Generate and display password suggestions from form inputs."""
         # Clear previous output
         self.output.clear()
         
@@ -196,10 +243,3 @@ class PasswordSuggestionWindow(QDialog):
         self.output.append("[SYSTEM] Generated 8 strong passwords:\n")
         for i, pwd in enumerate(suggestions, 1):
             self.output.append(f"{i}. {pwd}")
-
-# # uncomment the following line to run the script directly
-# if __name__ == "__main__":
-#     app = QApplication(sys.argv)
-#     window = PasswordSuggestionWindow()
-#     window.show()
-#     sys.exit(app.exec_())

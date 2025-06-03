@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Welcome to UMBRA’s Documentation! &#8212; UMBRA 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Main" href="main.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="welcome-to-umbra-s-documentation">
+<h1>Welcome to UMBRA’s Documentation!<a class="headerlink" href="#welcome-to-umbra-s-documentation" title="Link to this heading">¶</a></h1>
+<p><strong>UMBRA</strong> (User-tailored Model-Based Resourceful Algorithm) is a command-line cybersecurity tool developed for professionals and researchers. It leverages AI-powered password generation and analysis to provide secure password suggestions and simulate targeted password cracking attempts.</p>
+<p>While UMBRA was initially designed to incorporate OSINT techniques, this feature was removed due to practical limitations. The tool operates via a terminal interface, with an optional graphical user interface (GUI) that enhances usability and engagement.</p>
+<p>This documentation will guide you through UMBRA’s modules, features, and internal structure. It is written using <code class="docutils literal notranslate"><span class="pre">reStructuredText</span></code> and built with Sphinx.</p>
+<p>For help with formatting or extending documentation, visit the
+<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText guide</a>.
+Contents
+——–</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main.html#command-line-interface">Command Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#example-usage">Example Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="password_sug.html">Password Suggestion</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="password_sug.html#algorithm-details">Algorithm Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_sug.html#example-output">Example Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_sug.html#security-guarantees">Security Guarantees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_sug.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="password_gen.html">AI Password Generator</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="password_gen.html#api-integration">API Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_gen.html#workflow-diagram">Workflow Diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_gen.html#security-considerations">Security Considerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_gen.html#example-output">Example Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_gen.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cracker.html">Password Cracker</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cracker.html#file-format-specification">File Format Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cracker.html#cracking-process">Cracking Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cracker.html#security-notes">Security Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cracker.html#example-usage">Example Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cracker.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gui_generation.html">Password Generation GUI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gui_generation.html#ui-components">UI Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_generation.html#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_generation.html#styling">Styling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_generation.html#example-usage">Example Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_generation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gui_main.html">UMBRA Main Window</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gui_main.html#ui-components">UI Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_main.html#key-features">Key Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_main.html#example-usage">Example Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_main.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gui_suggestion.html">Password Suggestion GUI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gui_suggestion.html#input-fields">Input Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_suggestion.html#password-templates">Password Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_suggestion.html#security-features">Security Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_suggestion.html#example-output">Example Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_suggestion.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utility Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#file-detection">File Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#supported-formats">Supported Formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#usage-example">Usage Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Backend.html">Password Generator API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Backend.html#api-endpoint">API Endpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Backend.html#model-configuration">Model Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Backend.html#security-considerations">Security Considerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Backend.html#example-usage">Example Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Backend.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">UMBRA</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="password_sug.html">Password Suggestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="password_gen.html">AI Password Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cracker.html">Password Cracker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_generation.html">Password Generation GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_main.html">UMBRA Main Window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui_suggestion.html">Password Suggestion GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utility Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Backend.html">Password Generator API</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="main.html" title="next chapter">Main</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Abdel-Rahman Amoorah.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

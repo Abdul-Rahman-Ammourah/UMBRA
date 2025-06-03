@@ -1,81 +1,119 @@
+"""AES-GCM Password Cracking Module.
+
+This module provides functionality to:
+- Crack AES-GCM encrypted files using generated password lists
+- Handle cryptographic operations securely
+- Detect original file types after decryption
+- Provide progress feedback during cracking attempts
+
+Security Note:
+- Uses PBKDF2 for key derivation (1000 iterations by default)
+- Verifies authentication tags before decryption
+- Handles corrupted/malformed files gracefully
+"""
+
 import os
 from Crypto.Cipher import AES
 from Crypto.Protocol.KDF import PBKDF2
 from utils.decrypt_utils import detect_file_type
-def cracker():
-    print("[SYSTEM] AES-GCM Password Cracker Initialized")
 
-    enc_file = input("Enter the path to the encrypted file: ").strip()
+def cracker():
+    """Interactive AES-GCM password cracking workflow.
+    
+    Steps:
+    1. Collects encrypted file path
+    2. Lists available password wordlists
+    3. Attempts decryption with selected wordlist
+    4. Saves successfully decrypted files
+    
+    File Handling:
+    - Expects files with format: [salt(16)][nonce(16)][tag(16)][ciphertext]
+    - Outputs to: <original_name>_decrypted.<detected_extension>
+    
+    Returns:
+        str: The successful password if found, None otherwise
+        
+    Example:
+        >>> cracker()
+        [SYSTEM] AES-GCM Password Cracker Initialized
+        Enter the path to the encrypted file: test.enc
+        ...
+        [✓] Password found: correct_password
+        [INFO] Detected file type: .pdf
+        'correct_password'
+    """
+    print("[SYSTEM] Initializing AES-GCM cracker...")
+
+    # File input validation
+    enc_file = input("Enter encrypted file path: ").strip()
     if not os.path.isfile(enc_file):
         print(f"[ERROR] File not found: {enc_file}")
-        return
+        return None
 
+    # Password directory setup
     password_dir = os.path.join("src", "ai", "GeneratedPasswords")
     if not os.path.isdir(password_dir):
-        print(f"[ERROR] Password directory not found: {password_dir}")
-        return
+        print(f"[ERROR] Missing password directory: {password_dir}")
+        return None
 
+    # Password file selection
     password_files = sorted([
         f for f in os.listdir(password_dir)
         if f.startswith("password") and f.endswith(".txt")
     ])
 
     if not password_files:
-        print("[ERROR] No password files found.")
-        return
+        print("[ERROR] No password lists available")
+        return None
 
     print("\nAvailable password lists:")
     for idx, fname in enumerate(password_files, 1):
         print(f"{idx}. {fname}")
 
     try:
-        choice = int(input("Select a password list by number: ").strip())
-        if choice < 1 or choice > len(password_files):
-            print("[ERROR] Invalid selection.")
-            return
-    except ValueError:
-        print("[ERROR] Please enter a valid number.")
-        return
+        choice = int(input("Select wordlist (1-{len(password_files)}: ").strip())
+        selected_file = password_files[choice - 1]
+    except (ValueError, IndexError):
+        print("[ERROR] Invalid selection")
+        return None
 
-    selected_wordlist = os.path.join(password_dir, password_files[choice - 1])
-    output_base = os.path.splitext(enc_file)[0] + "_decrypted"  # No extension yet
-
+    # Cryptographic processing
     with open(enc_file, 'rb') as f:
         data = f.read()
 
-    if len(data) < 48:
-        print("[ERROR] Encrypted file is too short or malformed.")
-        return
+    if len(data) < 48:  # 16+16+16+min_ciphertext
+        print("[ERROR] Invalid file structure")
+        return None
 
-    salt = data[:16]
-    nonce = data[16:32]
-    tag = data[32:48]
+    salt, nonce, tag = data[:16], data[16:32], data[32:48]
     ciphertext = data[48:]
+    output_base = f"{os.path.splitext(enc_file)[0]}_decrypted"
 
-    with open(selected_wordlist, 'r', encoding='utf-8') as f:
+    # Password cracking attempt
+    with open(os.path.join(password_dir, selected_file)) as f:
         passwords = [line.strip() for line in f if line.strip()]
 
-    print(f"\n[INFO] Trying {len(passwords)} passwords from: {password_files[choice - 1]}")
+    print(f"\n[STATUS] Testing {len(passwords)} passwords...")
 
     for i, pwd in enumerate(passwords, 1):
-        key = PBKDF2(pwd, salt, dkLen=32)
-        cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
-
         try:
+            key = PBKDF2(pwd, salt, dkLen=32)
+            cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
             plaintext = cipher.decrypt_and_verify(ciphertext, tag)
             
-            file_extension = detect_file_type(plaintext)
-            output_file = output_base + file_extension  
+            ext = detect_file_type(plaintext)
+            output_path = f"{output_base}{ext}"
             
-            with open(output_file, 'wb') as out_file:
-                out_file.write(plaintext)
-            print(f"\n[✓] Password found: {pwd}")
-            print(f"[INFO] Detected file type: {file_extension}")
-            print(f"[✓] Decrypted file saved as: {output_file}")
+            with open(output_path, 'wb') as f:
+                f.write(plaintext)
+                
+            print(f"\n[SUCCESS] Password: {pwd}")
+            print(f"File saved to: {output_path}")
             return pwd
-        except Exception:
-            if i % 50 == 0 or i == len(passwords):
-                print(f"[INFO] Tried {i}/{len(passwords)} passwords...")
+            
+        except (ValueError, KeyError):
+            if i % 100 == 0 or i == len(passwords):
+                print(f"Attempted {i}/{len(passwords)}...")
 
-    print("\n[-] Password not found in list.")
+    print("\n[FAILURE] No matching password found")
     return None

@@ -1,7 +1,3 @@
-# OSINT Tools
-scrapy>=2.11.0          # Web scraping framework
-playwright>=1.40.0      # Browser automation
-
 # AI Integration
 flask-cors>=5.0.1       # For handling CORS in Flask applications
 
@@ -12,3 +8,6 @@ PyQt5>=5.15.11        # For creating GUI applications
 python-dotenv>=1.0.0    # For managing environment variables TO BE REMOVED
 requests>=2.32.3        # For making HTTP requests
 
+# Documentation
+sphinx>=7.2.6          # For generating documentation
+sphinxcontrib-mermaid>=0.9.0  # For Mermaid diagrams in Sphinx documentation

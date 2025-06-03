@@ -1,3 +1,11 @@
+"""UMBRA Main Application Window.
+
+Provides the primary interface for the UMBRA password security toolkit with:
+- Terminal-style output display
+- System boot animation
+- Module navigation controls
+- Cyberpunk aesthetic styling
+"""
 import time
 from PyQt5.QtWidgets import (QMainWindow, QVBoxLayout, QWidget, QPushButton, 
                             QLabel, QFrame, QHBoxLayout)
@@ -8,7 +16,12 @@ from .sug_window import PasswordSuggestionWindow
 from .widgets import HackerTerminal
 
 class UMRBAMainWindow(QMainWindow):
+    """Main application window for UMBRA security toolkit.
+
+    Inherits from QMainWindow to provide the primary application interface.
+    """
     def __init__(self):
+        """Initialize main window with terminal and control panel."""
         super().__init__()
         self.setWindowTitle("UMBRA")
         self.setGeometry(500, 250, 800, 600)
@@ -17,6 +30,7 @@ class UMRBAMainWindow(QMainWindow):
         self.init_ui()
     
     def init_ui(self):
+        """Setup UI components including terminal, buttons, and status bar."""
         # Main widget and layout
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
@@ -124,6 +138,7 @@ class UMRBAMainWindow(QMainWindow):
     
  
     def boot_sequence(self):
+        """Execute simulated system boot sequence in terminal."""
         messages = [
             "INITIALIZING UMBRA SECURITY SYSTEM...",
             "LOADING CRYPTOGRAPHIC MODULES...",
@@ -139,22 +154,34 @@ class UMRBAMainWindow(QMainWindow):
     
 
     def typewriter_effect(self, text):
+        """Update terminal display with new text.
+        
+        Args:
+            text (str): Text to append
+        """
         for i in range(len(text) + 1):
             QTimer.singleShot(50 * i, lambda t=text[:i]: self.update_terminal(t))
     
     def update_terminal(self, text):
+        """Update terminal display with new text.
+        
+        Args:
+            text (str): Text to append
+        """
         self.terminal.moveCursor(QTextCursor.End)
         self.terminal.insertPlainText("\r> " + text)
         self.terminal.moveCursor(QTextCursor.End)
         self.terminal.ensureCursorVisible()
     
     def open_generation_window(self):
+        """Launch targeted password generation module."""
         self.terminal.append("\n> OPENING TARGETED GENERATION MODULE...")
         self.generation_window = GenerationWindow(self)
         self.generation_window.exec_()
         self.terminal.append("> RETURNED TO MAIN INTERFACE")
     
     def open_suggestion_window(self):
+        """Launch personal password suggestion module."""
         self.terminal.append("\n> OPENING PERSONAL SUGGESTION MODULE...")
         self.suggestion_window = PasswordSuggestionWindow(self)
         self.suggestion_window.exec_()
