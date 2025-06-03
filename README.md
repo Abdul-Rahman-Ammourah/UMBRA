@@ -9,6 +9,24 @@
 - 🤖 **AI-Assisted Password Generation** – Uses intelligent techniques to create realistic password variations.  
 - 🔐 **Secure Password Suggestions** – Helps users create strong yet memorable passwords.  
 - ⚡ **Lightweight & Efficient** – Designed to be fast and resource-friendly on Linux/Windows systems.  
+## 📦 Dependencies  
+
+UMBRA requires the following Python packages:
+
+- `flask-cors>=5.0.1` – For handling CORS in Flask-based APIs.
+
+- `PyQt5>=5.15.11` – For optional GUI functionality.
+
+- `requests>=2.32.3` – For making HTTP requests.
+
+- `sphinx>=7.2.6` – For generating project documentation.
+- `sphinxcontrib-mermaid>=0.9.0` – To integrate Mermaid diagrams in docs.
+
+📥 To install all required packages:
+```bash
+pip install -r requirements.txt
+```
+
 
 ## 🔧 Installation  
 
