@@ -94,7 +94,7 @@ class UMRBAMainWindow(QMainWindow):
         button_layout.addWidget(self.btn_generate)
         
         # Suggest button
-        self.btn_suggest = QPushButton("PERSONAL SUGGESTION")
+        self.btn_suggest = QPushButton("Password SUGGESTION")
         self.btn_suggest.setStyleSheet(self.btn_generate.styleSheet())
         self.btn_suggest.clicked.connect(self.open_suggestion_window)
         button_layout.addWidget(self.btn_suggest)
@@ -182,7 +182,7 @@ class UMRBAMainWindow(QMainWindow):
     
     def open_suggestion_window(self):
         """Launch personal password suggestion module."""
-        self.terminal.append("\n> OPENING PERSONAL SUGGESTION MODULE...")
+        self.terminal.append("\n> OPENING PASSWORD SUGGESTION MODULE...")
         self.suggestion_window = PasswordSuggestionWindow(self)
         self.suggestion_window.exec_()
         self.terminal.append("> RETURNED TO MAIN INTERFACE")
