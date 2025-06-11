@@ -6,7 +6,7 @@ PyQt5>=5.15.11        # For creating GUI applications
 
 # Utilities
 requests>=2.32.3        # For making HTTP requests
-Crypto                  # For cryptographic operations
+pycryptodome                  # For cryptographic operations
 # Documentation
 sphinx>=7.2.6          # For generating documentation
 sphinxcontrib-mermaid>=0.9.0  # For Mermaid diagrams in Sphinx documentation
