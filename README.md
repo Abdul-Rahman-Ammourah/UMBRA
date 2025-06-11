@@ -41,7 +41,7 @@ chmod +x umbra.sh
 ```
 git clone https://github.com/Abdul-Rahman-Ammourah/UMBRA.git
 cd UMBRA
-./umbra.bat
+umbra.bat
 ```
 
 ## 📌 Use Cases
