@@ -42,7 +42,7 @@ def cracker():
         [INFO] Detected file type: .pdf
         'correct_password'
     """
-    print("[SYSTEM] Initializing AES-GCM cracker...")
+    print("[SYSTEM] Initializing Cracker...")
 
     # File input validation
     enc_file = input("Enter encrypted file path: ").strip()
@@ -71,7 +71,7 @@ def cracker():
         print(f"{idx}. {fname}")
 
     try:
-        choice = int(input("Select wordlist (1-{len(password_files)}: ").strip())
+        choice = int(input(f"Select wordlist (1-{len(password_files)}): ").strip())
         selected_file = password_files[choice - 1]
     except (ValueError, IndexError):
         print("[ERROR] Invalid selection")
@@ -107,12 +107,12 @@ def cracker():
             with open(output_path, 'wb') as f:
                 f.write(plaintext)
                 
-            print(f"\n[SUCCESS] Password: {pwd}")
-            print(f"File saved to: {output_path}")
+            print(f"\n[SUCCESS] Password: {pwd}\n")
+            print(f"File saved to: {output_path}\n")
             return pwd
             
         except (ValueError, KeyError):
-            if i % 100 == 0 or i == len(passwords):
+            if i % 300 == 0:
                 print(f"Attempted {i}/{len(passwords)}...")
 
     print("\n[FAILURE] No matching password found")
