@@ -94,7 +94,7 @@ class UMRBAMainWindow(QMainWindow):
         button_layout.addWidget(self.btn_generate)
         
         # Suggest button
-        self.btn_suggest = QPushButton("Password SUGGESTION")
+        self.btn_suggest = QPushButton("PASSWORD SUGGESTION")
         self.btn_suggest.setStyleSheet(self.btn_generate.styleSheet())
         self.btn_suggest.clicked.connect(self.open_suggestion_window)
         button_layout.addWidget(self.btn_suggest)
