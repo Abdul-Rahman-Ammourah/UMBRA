@@ -65,7 +65,10 @@ def password_generator(Uname: str = "Ahmed", Byear: str = "1999", Fav: str = "Ca
         # Handle case where API returns a dictionary
         return json_response.get("results", []), json_response.get("time_taken_seconds", 0.0)
     except requests.exceptions.RequestException as e:
-        print(f"[ERROR] Failed to contact password generation API: {e}")
+        print(f"[ERROR] Failed to contact password generation API: {e}\n")
+        print("[ERROR] Ensure that your backend server is running and accessible." \
+        "By running the command: 'python Backend\ModelAPI.py'")
+        print("[ERROR] If the issue persists, check your network connection or API endpoint.")
         return [], 0.0
 
 def generate_password_list():
