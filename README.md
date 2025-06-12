@@ -44,6 +44,11 @@ cd UMBRA
 umbra.bat
 ```
 
+### 🤖Model Installation
+
+- Download the model from [here](https://drive.google.com/drive/folders/12fkda0zmt8-euxRu2EeF_Sor9vpnE401?usp=sharing).
+- Place the model in the `backend` directory.
+
 ## 📌 Use Cases
 - 🛡️ Penetration Testing – Generate smarter password lists for ethical hacking and security assessments.
 - 📢 Cybersecurity Awareness – Demonstrate how easily weak passwords can be guessed.
